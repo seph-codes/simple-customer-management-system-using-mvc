@@ -2,9 +2,11 @@
 // controller.php
 include 'model.php';
 
-// if form submitted to add or edit
+$action = $_GET['action'] ?? null;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $ok = false;
+
     if (isset($_POST['add'])) {
         $ok = add_customer(
             $_POST['name'] ?? '',
@@ -18,10 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_POST['email'] ?? '',
             $_POST['phone'] ?? ''
         );
-    } elseif (isset($_POST['delete'])) {
-        $ok = delete_customer($_POST['id'] ?? 0);
-    } elseif (isset($_POST['reset'])) {
-        $ok = reset_customers();
     }
 
     if ($ok) {
@@ -32,7 +30,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $error = 'The requested customer operation could not be completed.';
 }
 
-// determine which view to show
+if ($action === 'delete' && isset($_GET['id'])) {
+    if (delete_customer($_GET['id'])) {
+        header('Location: index.php');
+        exit;
+    }
+
+    $error = 'Customer could not be deleted.';
+    $customers = fetch_all_customers();
+    include 'views/list.php';
+    exit;
+}
+
+if ($action === 'reset') {
+    if (reset_customers()) {
+        header('Location: index.php');
+        exit;
+    }
+
+    $error = 'Customers could not be reset.';
+    $customers = fetch_all_customers();
+    include 'views/list.php';
+    exit;
+}
+
 $action = $_GET['action'] ?? 'list';
 
 if ($action === 'new') {

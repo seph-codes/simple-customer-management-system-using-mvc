@@ -7,10 +7,12 @@
     <p role="alert"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></p>
   <?php endif; ?>
   <p><a href="index.php?action=new">Add New Customer</a></p>
-  <form method="post" action="index.php"
-    onsubmit="return confirm('Delete all customers? This cannot be undone.');">
-    <button type="submit" name="reset">Reset All Customers</button>
-  </form>
+  <p>
+    <a href="index.php?action=reset"
+      onclick="return confirm('Delete all customers? This cannot be undone.');">
+      Reset All Customers
+    </a>
+  </p>
   <table border="1" cellpadding="5">
 
 <tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Actions</th></tr>
@@ -22,11 +24,8 @@
       <td><?= htmlspecialchars($c['phone'], ENT_QUOTES, 'UTF-8') ?></td>
       <td>
         <a href="index.php?action=edit&amp;id=<?= (int)$c['id'] ?>">Edit</a>
-        <form method="post" action="index.php" style="display: inline"
-          onsubmit="return confirm('Delete this customer?');">
-          <input type="hidden" name="id" value="<?= (int)$c['id'] ?>">
-          <button type="submit" name="delete">Delete</button>
-        </form>
+        <a href="index.php?action=delete&amp;id=<?= (int)$c['id'] ?>"
+          onclick="return confirm('Delete this customer?');">Delete</a>
       </td>
     </tr>
     <?php endforeach ?>
