@@ -8,16 +8,23 @@
     <?= isset($customer) ? 'Edit' : 'Add New' ?> Customer
   </h2>
   <form method="post" action="index.php">
+    <?php if (isset($customer)): ?>
+      <input type="hidden" name="id" value="<?= (int)$customer['id'] ?>">
+    <?php endif; ?>
     Name<br>
     <input type="text" name="name"
-      value="<?= $customer['name'] ?? '' ?>" required><br><br>
+      value="<?= htmlspecialchars($customer['name'] ?? '', ENT_QUOTES, 'UTF-8') ?>" required><br><br>
     Email<br>
     <input type="email" name="email"
-      value="<?= $customer['email'] ?? '' ?>" required><br><br>
+      value="<?= htmlspecialchars($customer['email'] ?? '', ENT_QUOTES, 'UTF-8') ?>" required><br><br>
     Phone<br>
     <input type="text" name="phone"
-      value="<?= $customer['phone'] ?? '' ?>"><br><br>
-    <button type="submit" name="add">Save</button>
+      value="<?= htmlspecialchars($customer['phone'] ?? '', ENT_QUOTES, 'UTF-8') ?>"><br><br>
+    <?php if (isset($customer)): ?>
+      <button type="submit" name="update">Update</button>
+    <?php else: ?>
+      <button type="submit" name="add">Save</button>
+    <?php endif; ?>
   </form>
   <p><a href="index.php">Back to list</a></p>
 </body>
